@@ -11,7 +11,7 @@ repository.workspace = true
 crate-type = ["cdylib", "rlib"]
 
 [dependencies]
-frizbee = { path = "../..", default-features = false }
+frizbee = { package = "neo_frizbee", path = "../..", default-features = false }
 # pinned to the wasm-bindgen CLI version provided by the nix dev shell
 wasm-bindgen = "=0.2.121"
 js-sys = "0.3"

@@ -13,7 +13,7 @@ edition = "2024"
 repository = "https://github.com/saghen/frizbee"
 
 [package]
-name = "frizbee"
+name = "neo_frizbee"
 description = "Fast typo-resistant fuzzy matching via SIMD smith waterman, similar algorithm to FZF"
 include = ["src/**", "Cargo.toml", "README.md", "LICENSE"]
 license.workspace = true

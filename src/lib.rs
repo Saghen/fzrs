@@ -242,7 +242,7 @@ impl PartialEq for MatchIndices {
 }
 impl Eq for MatchIndices {}
 
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
 #[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
 #[cfg_attr(feature = "serde", serde(default))]
 pub struct Config {
@@ -451,7 +451,7 @@ impl Matching {
 /// Controls the scoring used by the smith waterman algorithm. Pay close
 /// attention to the documentation for each property, as small changes can lead
 /// to poor matching.
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
 #[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
 #[cfg_attr(feature = "serde", serde(default))]
 pub struct Scoring {

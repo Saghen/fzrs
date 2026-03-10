@@ -258,29 +258,17 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "d9c4f5dac5e15c24eb999c26181a6ca40b39fe946cbe4c263c7209467bc83af2"
 
 [[package]]
-name = "frizbee"
-version = "0.13.0"
-dependencies = [
- "criterion",
- "nucleo",
- "proptest",
- "rand 0.10.0",
- "rand_distr",
- "serde",
-]
-
-[[package]]
 name = "frizbee-c"
 version = "0.13.0"
 dependencies = [
- "frizbee",
+ "neo_frizbee",
 ]
 
 [[package]]
 name = "frizbee-py"
 version = "0.13.0"
 dependencies = [
- "frizbee",
+ "neo_frizbee",
  "pyo3",
 ]
 
@@ -288,8 +276,8 @@ dependencies = [
 name = "frizbee-wasm"
 version = "0.13.0"
 dependencies = [
- "frizbee",
  "js-sys",
+ "neo_frizbee",
  "serde",
  "serde-wasm-bindgen",
  "talc",
@@ -471,6 +459,18 @@ checksum = "4869b6a491569605d66d3952bcdf03df789e5b536e5f0cf7758a7f08a55ae24d"
 dependencies = [
  "cc",
  "walkdir",
+]
+
+[[package]]
+name = "neo_frizbee"
+version = "0.13.0"
+dependencies = [
+ "criterion",
+ "nucleo",
+ "proptest",
+ "rand 0.10.0",
+ "rand_distr",
+ "serde",
 ]
 
 [[package]]

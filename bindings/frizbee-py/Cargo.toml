@@ -12,5 +12,5 @@ crate-type = ["cdylib"]
 name = "frizbee_py"
 
 [dependencies]
-frizbee = { path = "../.." }
+frizbee = { package = "neo_frizbee", path = "../.." }
 pyo3 = { version = "0.29", features = ["abi3-py310", "extension-module"] }
