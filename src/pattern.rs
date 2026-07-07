@@ -190,7 +190,7 @@ impl Pattern {
     /// the max typos based on needle length:
     ///
     /// ```
-    /// use frizbee::{Config, Matcher, Pattern};
+    /// use neo_frizbee::{Config, Matcher, Pattern};
     ///
     /// let patterns = Pattern::parse_query("foo longerneedle")
     ///     .into_iter()

@@ -113,7 +113,7 @@ impl PyPattern {
     /// `None` inherits the matcher option
     #[getter]
     fn scoring(&self) -> Option<PyScoring> {
-        self.inner.config.scoring.clone().map(Into::into)
+        self.inner.config.scoring.map(Into::into)
     }
 
     #[setter]

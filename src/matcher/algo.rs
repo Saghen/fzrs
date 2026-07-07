@@ -64,7 +64,7 @@ where
         let case_sensitive = config.casing.respects_case_for(needle);
         Self {
             needle: needle.to_string(),
-            config: config.clone(),
+            config: *config,
             min_haystack_len: config
                 .max_typos
                 .map(|max| needle.chars().count().saturating_sub(max as usize))

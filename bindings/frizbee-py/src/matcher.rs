@@ -385,7 +385,7 @@ impl PyMatcher {
             || matching.is_some()
             || sort.is_some()
             || scoring.is_some();
-        let mut next_config = self.inner.config().clone();
+        let mut next_config = *self.inner.config();
         if changed(&max_typos) {
             next_config.max_typos = max_typos.extract::<Option<u16>>(py)?;
         }
@@ -461,6 +461,6 @@ impl PyMatcher {
 
     #[getter]
     fn scoring(&self) -> PyScoring {
-        self.inner.config().scoring.clone().into()
+        self.inner.config().scoring.into()
     }
 }

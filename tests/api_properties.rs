@@ -1,7 +1,7 @@
 use std::collections::BTreeMap;
 
-use frizbee::k_merge::k_merge_matches_by_score_then_index_desc;
-use frizbee::{
+use neo_frizbee::k_merge::k_merge_matches_by_score_then_index_desc;
+use neo_frizbee::{
     CaseMatching, Config, Match, MatchIndices, Matcher, Matching, Pattern, PatternConfig, Scoring,
     SortStrategy,
 };

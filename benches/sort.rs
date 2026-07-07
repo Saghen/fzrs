@@ -1,7 +1,7 @@
 use std::time::Duration;
 
 use criterion::{BatchSize, BenchmarkId, Criterion};
-use frizbee::Match;
+use neo_frizbee::Match;
 use rand::RngExt;
 
 fn bench_with_scale(c: &mut Criterion, scale: usize, batch_size: BatchSize) {
@@ -37,7 +37,7 @@ fn bench_with_scale(c: &mut Criterion, scale: usize, batch_size: BatchSize) {
         b.iter_batched(
             || i.clone(),
             |mut m| {
-                frizbee::radix_sort_matches(&mut m);
+                neo_frizbee::radix_sort_matches(&mut m);
                 m
             },
             batch_size,

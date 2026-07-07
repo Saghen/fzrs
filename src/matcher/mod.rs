@@ -125,7 +125,7 @@ impl Matcher {
     /// pattern's score.
     ///
     /// ```
-    /// use frizbee::{Config, Matcher, Pattern};
+    /// use neo_frizbee::{Config, Matcher, Pattern};
     ///
     /// let mut matcher = Matcher::from_patterns(&Pattern::parse_query("foo !^bar"), &Config::default());
     /// let matches = matcher.match_list(&["foo", "barfoo", "foobar"]);
@@ -135,7 +135,7 @@ impl Matcher {
         Self {
             patterns: Self::build_patterns(patterns, config),
             raw_patterns: patterns.to_vec(),
-            config: config.clone(),
+            config: *config,
         }
     }
 
@@ -143,7 +143,7 @@ impl Matcher {
     /// [`Pattern::parse_query`].
     ///
     /// ```rust
-    /// use frizbee::{Config, Matcher};
+    /// use neo_frizbee::{Config, Matcher};
     ///
     /// let mut matcher = Matcher::from_query("foo !^bar", &Config::default());
     /// let matches = matcher.match_list(&["foo", "barfoo", "foobar"]);
@@ -156,7 +156,7 @@ impl Matcher {
     /// typos based on needle length:
     ///
     /// ```rust
-    /// use frizbee::{Config, Matcher, Pattern};
+    /// use neo_frizbee::{Config, Matcher, Pattern};
     ///
     /// let patterns = Pattern::parse_query("foo !^bar")
     ///     .into_iter()
@@ -313,7 +313,7 @@ impl Matcher {
     /// convenient API for when re-using the [`Matcher`] isn't necessary.
     ///
     /// ```
-    /// use frizbee::{Config, iter::FuzzyMatchExt};
+    /// use neo_frizbee::{Config, iter::FuzzyMatchExt};
     ///
     /// let haystacks = ["fooBar", "foo_bar", "prelude", "println!"];
     /// let matches: Vec<_> = haystacks
@@ -348,7 +348,7 @@ impl Matcher {
     /// convenient API for when re-using the [`Matcher`] isn't necessary.
     ///
     /// ```
-    /// use frizbee::{Config, iter::FuzzyMatchExt};
+    /// use neo_frizbee::{Config, iter::FuzzyMatchExt};
     ///
     /// let haystacks = ["fooBar", "foo_bar", "prelude", "println!"];
     /// let matches: Vec<_> = haystacks
@@ -937,7 +937,7 @@ mod tests {
         let second_config = Config::default()
             .casing(CaseMatching::Smart)
             .sort(SortStrategy::IndexAsc);
-        matcher.set_config(second_config.clone());
+        matcher.set_config(second_config);
         let second = matcher.match_list(&second_haystacks);
         assert_eq!(
             &second,
@@ -954,7 +954,7 @@ mod tests {
         let unicode_config = Config::default()
             .max_typos(Some(0))
             .sort(SortStrategy::IndexAsc);
-        matcher.set_config(unicode_config.clone());
+        matcher.set_config(unicode_config);
         let unicode = matcher.match_list(&unicode_haystacks);
         assert_eq!(
             &unicode,
@@ -965,7 +965,7 @@ mod tests {
         let third_config = Config::default()
             .casing(CaseMatching::Ignore)
             .max_typos(Some(1));
-        matcher.set_config(third_config.clone());
+        matcher.set_config(third_config);
         let third = matcher.match_list(&first_haystacks);
         assert_eq!(
             &third,

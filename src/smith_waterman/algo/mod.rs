@@ -34,7 +34,7 @@ impl<B: Backend> Kernel for SmithWaterman<B> {
             needle_simd,
             needle_unicode,
             case_sensitive,
-            scoring: scoring.clone(),
+            scoring: *scoring,
             score_matrix: Matrix::new(needle_len, MAX_HAYSTACK_LEN),
             match_masks: Matrix::new(needle_len, MAX_HAYSTACK_LEN),
             unicode_pending_gap_open_masks,

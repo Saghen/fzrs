@@ -21,7 +21,7 @@
 //! your list.
 //!
 //! ```rust
-//! use frizbee::{Config, Matcher};
+//! use neo_frizbee::{Config, Matcher};
 //!
 //! let needle = "fBr";
 //! let haystacks = ["fooBar", "foo_bar", "barfoo", "prelude", "println!"];
@@ -43,7 +43,7 @@
 //! ```
 //!
 //! ```rust
-//! use frizbee::{Config, Matcher};
+//! use neo_frizbee::{Config, Matcher};
 //!
 //! let haystacks = ["foo", "barfoo", "foobar", "bar/foo"];
 //! let mut matcher = Matcher::from_query("foo !^bar", &Config::default());
@@ -55,7 +55,7 @@
 //! typos based on needle length:
 //!
 //! ```rust
-//! use frizbee::{Config, Matcher, Pattern};
+//! use neo_frizbee::{Config, Matcher, Pattern};
 //!
 //! let haystacks = ["foo", "barfoo", "foobar", "bar/foo"];
 //! let patterns = Pattern::parse_query("foo !^bar")
@@ -75,7 +75,7 @@
 //! `Matcher::from_patterns` or `Matcher::new` (if you only have one pattern).
 //!
 //! ```rust
-//! use frizbee::{Config, Matcher, Matching, Pattern, PatternConfig};
+//! use neo_frizbee::{Config, Matcher, Matching, Pattern, PatternConfig};
 //!
 //! let patterns = [
 //!     Pattern::new("foo", PatternConfig::default()),
@@ -93,7 +93,7 @@
 //! but it is slower than matching a full list with `Matcher::match_list`.
 //!
 //! ```rust
-//! use frizbee::{iter::FuzzyMatchExt, Config, radix_sort_matches};
+//! use neo_frizbee::{iter::FuzzyMatchExt, Config, radix_sort_matches};
 //!
 //! let haystacks = ["fooBar", "foo_bar", "prelude", "println!"];
 //! let mut matches: Vec<_> = haystacks
@@ -136,7 +136,7 @@ pub use sort::radix_sort_matches;
 /// Iterator extension for fuzzy matching
 ///
 /// ```
-/// use frizbee::{Config, iter::FuzzyMatchExt};
+/// use neo_frizbee::{Config, iter::FuzzyMatchExt};
 ///
 /// let haystacks = ["fooBar", "foo_bar", "prelude", "println!"];
 /// let matches: Vec<_> = haystacks

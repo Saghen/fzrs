@@ -8,7 +8,7 @@ use crate::{Config, Match, MatchIndices, Pattern};
 /// # Example
 ///
 /// ```
-/// use frizbee::{Config, iter::FuzzyMatchExt};
+/// use neo_frizbee::{Config, iter::FuzzyMatchExt};
 ///
 /// let haystacks = ["fooBar", "foo_bar", "prelude", "println!"];
 /// let matches: Vec<_> = haystacks
@@ -22,7 +22,7 @@ pub trait FuzzyMatchExt: Iterator + Sized {
     /// [`Matcher::match_list`] API.
     ///
     /// ```
-    /// use frizbee::{Config, iter::FuzzyMatchExt};
+    /// use neo_frizbee::{Config, iter::FuzzyMatchExt};
     ///
     /// let haystacks = ["fooBar", "foo_bar", "prelude", "println!"];
     /// let matches: Vec<_> = haystacks
@@ -51,7 +51,7 @@ pub trait FuzzyMatchExt: Iterator + Sized {
     /// matched indices in the UI.
     ///
     /// ```
-    /// use frizbee::{Config, iter::FuzzyMatchExt};
+    /// use neo_frizbee::{Config, iter::FuzzyMatchExt};
     ///
     /// let haystacks = ["fooBar", "foo_bar", "prelude", "println!"];
     /// let matches: Vec<_> = haystacks
