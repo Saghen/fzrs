@@ -40,8 +40,16 @@ const DATASET_BENCHMARKS: &[DatasetBenchmark] = &[
 ];
 
 fn criterion_benchmark(c: &mut Criterion) {
-    // Bench on real data
+    // Bench on real data. The datasets are not committed (see /benches/data in .gitignore),
+    // so skip any that are missing rather than panicking.
     for dataset in DATASET_BENCHMARKS {
+        if !std::path::Path::new(dataset.path).exists() {
+            eprintln!(
+                "skipping {} benchmark: dataset not found at {}",
+                dataset.name, dataset.path
+            );
+            continue;
+        }
         let haystack_owned = read_lines(dataset.path);
         let haystack = haystack_owned
             .iter()
