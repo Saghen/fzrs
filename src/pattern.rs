@@ -273,10 +273,7 @@ impl PatternConfig {
             casing: self.casing.unwrap_or(config.casing),
             unicode: self.unicode.unwrap_or(config.unicode),
             matching: self.matching.unwrap_or(config.matching),
-            scoring: self
-                .scoring
-                .clone()
-                .unwrap_or_else(|| config.scoring.clone()),
+            scoring: self.scoring.unwrap_or(config.scoring),
             sort: config.sort,
         }
     }

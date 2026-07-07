@@ -317,7 +317,7 @@ impl MultiPatternCase {
 /// `match_list` calls, then intersect the non-negated patterns (summing scores)
 /// and subtract the negated ones.
 fn reference_multi_pattern(case: &MultiPatternCase) -> Vec<Match> {
-    let config = case.config.clone().sort(SortStrategy::IndexAsc);
+    let config = case.config.sort(SortStrategy::IndexAsc);
     let active = case
         .patterns
         .iter()
@@ -331,7 +331,7 @@ fn reference_multi_pattern(case: &MultiPatternCase) -> Vec<Match> {
         .iter()
         .map(|pattern| {
             let matching = pattern.config.matching.unwrap_or(case.config.matching);
-            Matcher::new(&pattern.needle, &config.clone().matching(matching))
+            Matcher::new(&pattern.needle, &config.matching(matching))
                 .match_list(&case.haystacks)
                 .into_iter()
                 .map(|match_| (match_.index, match_))
@@ -374,7 +374,7 @@ fn generated_multi_pattern_properties() {
 fn assert_multi_pattern_case(case: &MultiPatternCase) {
     let reference = reference_multi_pattern(case);
 
-    let index_config = case.config.clone().sort(SortStrategy::IndexAsc);
+    let index_config = case.config.sort(SortStrategy::IndexAsc);
     let mut matcher = Matcher::from_patterns(&case.patterns, &index_config);
     let matches = matcher.match_list(&case.haystacks);
     assert_match_views_eq("multi-pattern match_list", &matches, &reference);
@@ -402,7 +402,7 @@ fn assert_multi_pattern_case(case: &MultiPatternCase) {
         }
     }
 
-    let score_config = case.config.clone().sort(SortStrategy::ScoreThenIndexAsc);
+    let score_config = case.config.sort(SortStrategy::ScoreThenIndexAsc);
     let mut matcher = Matcher::from_patterns(&case.patterns, &score_config);
     let sorted = matcher.match_list(&case.haystacks);
     assert!(sorted.is_sorted(), "unsorted result for {case:?}");
@@ -527,7 +527,7 @@ fn long_prefiltered_fallback_preserves_scores_and_original_byte_offsets() {
     let filtered_config = Config::default()
         .scoring(scoring)
         .sort(SortStrategy::IndexAsc);
-    let unfiltered_config = filtered_config.clone().max_typos(None);
+    let unfiltered_config = filtered_config.max_typos(None);
 
     let filtered = Matcher::new("ab", &filtered_config).match_list(&[&haystack]);
     let unfiltered = Matcher::new("ab", &unfiltered_config).match_list(&[&haystack]);

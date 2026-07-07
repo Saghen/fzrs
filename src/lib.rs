@@ -129,6 +129,7 @@ mod sort;
 
 use r#const::*;
 
+pub use r#const::SIMD_CHUNK_BYTES;
 pub use matcher::Matcher;
 pub use pattern::{Pattern, PatternConfig};
 pub use sort::radix_sort_matches;
@@ -146,6 +147,39 @@ pub use sort::radix_sort_matches;
 /// ```
 pub mod iter {
     pub use crate::matcher::{FuzzyMatch, FuzzyMatchExt, FuzzyMatchIndices};
+}
+
+/// Matches items in parallel on multiple real threads, resolving each item's
+/// haystack bytes through the `resolve` callback, returning a list of
+/// [`Match`] values ordered by the configured [`SortStrategy`]. Shorthand for
+/// [`Matcher::match_list_parallel_resolved`] when re-using the [`Matcher`]
+/// isn't necessary.
+///
+/// For each item, `resolve` is called with a stack buffer. It should fill the
+/// buffer with pointers to [`SIMD_CHUNK_BYTES`]-wide chunks of the haystack
+/// (e.g. into an arena) and return `Some((chunk_count, byte_len))`, or `None`
+/// to skip the item (e.g. deleted files). This avoids materializing contiguous
+/// strings for items whose bytes live in non-contiguous storage.
+///
+/// `N` is the chunk pointer capacity and must cover the longest haystack:
+/// `max_haystack_bytes.div_ceil(SIMD_CHUNK_BYTES)`.
+///
+/// # Pointer contract
+/// See [`Matcher::match_list_resolved_into`].
+#[cfg(all(feature = "std", not(target_family = "wasm")))]
+pub fn match_list_parallel_resolved<S, T, F, const N: usize>(
+    needle: S,
+    items: &[T],
+    resolve: &F,
+    config: &Config,
+    threads: usize,
+) -> Vec<Match>
+where
+    S: AsRef<str>,
+    T: Sync,
+    F: Fn(&T, &mut [*const u8; N]) -> Option<(usize, u16)> + Sync,
+{
+    Matcher::new(needle.as_ref(), config).match_list_parallel_resolved(items, resolve, threads)
 }
 
 /// Result of a fuzzy match, containing the score and index in the haystack

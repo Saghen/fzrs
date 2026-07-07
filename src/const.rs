@@ -8,3 +8,8 @@ pub const DELIMITER_BONUS: u16 = 4; // Bonus for matching _after_ a delimiter ch
 pub const CAPITALIZATION_BONUS: u16 = 4; // Bonus for matching a capital letter after a lowercase letter (e.g. "b" on "fooBar" will receive a bonus on "B")
 pub const MATCHING_CASE_BONUS: u16 = 4; // Bonus for matching the case of the needle (e.g. "WorLd" on "WoRld" will receive a bonus on "W", "o", "d")
 pub const EXACT_MATCH_BONUS: u16 = 8; // Bonus for matching the exact needle (e.g. "foo" on "foo" will receive the bonus)
+
+/// Chunk width in bytes for the resolver-based matching APIs
+/// ([`crate::match_list_parallel_resolved`]). Haystacks are provided as lists of pointers to
+/// chunks of this size, with the last chunk zero-padded.
+pub const SIMD_CHUNK_BYTES: usize = 16;

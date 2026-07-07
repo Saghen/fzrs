@@ -18,6 +18,7 @@ mod iter;
 // Threading requires `std`, and WASM does not support it at all
 #[cfg(all(feature = "std", not(target_family = "wasm")))]
 mod parallel;
+mod resolved;
 use algo::{MANY_TYPOS, NO_PREFILTER, Specialized};
 use backend::*;
 pub use iter::{FuzzyMatch, FuzzyMatchExt, FuzzyMatchIndices};

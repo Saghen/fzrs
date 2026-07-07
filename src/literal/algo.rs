@@ -70,7 +70,7 @@ impl<B: Backend> LiteralImpl<B> {
 
         Self {
             mode: config.matching,
-            scoring: config.scoring.clone(),
+            scoring: config.scoring,
             needle_len: needle.len(),
             needle_ascii,
             needle_unicode,

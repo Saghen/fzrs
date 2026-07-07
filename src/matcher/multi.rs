@@ -297,7 +297,7 @@ mod tests {
         )
         .match_list(&haystacks);
         let from_config =
-            Matcher::new("foo", &config.clone().matching(Matching::Prefix)).match_list(&haystacks);
+            Matcher::new("foo", &config.matching(Matching::Prefix)).match_list(&haystacks);
         assert_eq!(from_pattern, from_config);
     }
 
@@ -306,7 +306,7 @@ mod tests {
         let haystacks = ["fooX", "xfoo"];
         let config = Config::default().sort(SortStrategy::IndexAsc);
         let mut matcher = multi("^foo", &config);
-        matcher.set_config(config.clone().max_typos(None));
+        matcher.set_config(config.max_typos(None));
 
         let matches = matcher.match_list(&haystacks);
         assert_eq!(matches.iter().map(|m| m.index).collect::<Vec<_>>(), vec![0]);
