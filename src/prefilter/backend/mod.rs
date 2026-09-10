@@ -8,7 +8,13 @@ mod avx;
 mod avx512;
 #[cfg(target_arch = "aarch64")]
 mod neon;
-#[cfg(any(test, not(all(target_arch = "wasm32", target_feature = "simd128"))))]
+#[cfg(any(
+    test,
+    not(any(
+        all(target_arch = "wasm32", target_feature = "simd128"),
+        target_arch = "aarch64"
+    ))
+))]
 mod scalar;
 #[cfg(target_arch = "x86_64")]
 mod sse;
@@ -27,7 +33,13 @@ pub(crate) use avx::PrefilterAVXBackend;
 pub(crate) use avx512::PrefilterAVX512Backend;
 #[cfg(target_arch = "aarch64")]
 pub(crate) use neon::PrefilterNEONBackend;
-#[cfg(any(test, not(all(target_arch = "wasm32", target_feature = "simd128"))))]
+#[cfg(any(
+    test,
+    not(any(
+        all(target_arch = "wasm32", target_feature = "simd128"),
+        target_arch = "aarch64"
+    ))
+))]
 pub(crate) use scalar::PrefilterScalarBackend;
 #[cfg(target_arch = "x86_64")]
 pub(crate) use sse::PrefilterSSEBackend;
@@ -38,7 +50,13 @@ pub(crate) use wasm::PrefilterWasmBackend;
 pub type PrefilterAVX512 = Prefilter<avx512::PrefilterAVX512Backend>;
 #[cfg(target_arch = "aarch64")]
 pub type PrefilterNEON = Prefilter<neon::PrefilterNEONBackend>;
-#[cfg(any(test, not(all(target_arch = "wasm32", target_feature = "simd128"))))]
+#[cfg(any(
+    test,
+    not(any(
+        all(target_arch = "wasm32", target_feature = "simd128"),
+        target_arch = "aarch64"
+    ))
+))]
 pub type PrefilterScalar = Prefilter<scalar::PrefilterScalarBackend>;
 #[cfg(target_arch = "x86_64")]
 pub type PrefilterSSE = Prefilter<sse::PrefilterSSEBackend>;

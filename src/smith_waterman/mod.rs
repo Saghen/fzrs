@@ -58,7 +58,10 @@ use backend::Backend;
 use backend::{BackendAVX, BackendAVX512, BackendAVX512U8, BackendAVXU8, BackendSSE, BackendSSEU8};
 #[cfg(target_arch = "aarch64")]
 use backend::{BackendNEON, BackendNEONU8};
-#[cfg(not(all(target_arch = "wasm32", target_feature = "simd128")))]
+#[cfg(not(any(
+    all(target_arch = "wasm32", target_feature = "simd128"),
+    target_arch = "aarch64"
+)))]
 use backend::{BackendScalar8, BackendScalar16U8};
 #[cfg(all(target_arch = "wasm32", target_feature = "simd128"))]
 use backend::{BackendWasm, BackendWasmU8};
@@ -93,9 +96,15 @@ pub type SmithWatermanNEONU8 = SmithWaterman<BackendNEONU8>;
 pub type SmithWatermanWasm = SmithWaterman<BackendWasm>;
 #[cfg(all(target_arch = "wasm32", target_feature = "simd128"))]
 pub type SmithWatermanWasmU8 = SmithWaterman<BackendWasmU8>;
-#[cfg(not(all(target_arch = "wasm32", target_feature = "simd128")))]
+#[cfg(not(any(
+    all(target_arch = "wasm32", target_feature = "simd128"),
+    target_arch = "aarch64"
+)))]
 pub type SmithWatermanScalar = SmithWaterman<BackendScalar8>;
-#[cfg(not(all(target_arch = "wasm32", target_feature = "simd128")))]
+#[cfg(not(any(
+    all(target_arch = "wasm32", target_feature = "simd128"),
+    target_arch = "aarch64"
+)))]
 pub type SmithWatermanScalarU8 = SmithWaterman<BackendScalar16U8>;
 
 /// Returns true if every possible Smith-Waterman matrix cell value for this

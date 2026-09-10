@@ -26,7 +26,13 @@ mod avx;
 mod avx512;
 #[cfg(target_arch = "aarch64")]
 mod neon;
-#[cfg(any(test, not(all(target_arch = "wasm32", target_feature = "simd128"))))]
+#[cfg(any(
+    test,
+    not(any(
+        all(target_arch = "wasm32", target_feature = "simd128"),
+        target_arch = "aarch64"
+    ))
+))]
 mod scalar;
 #[cfg(target_arch = "x86_64")]
 mod sse;
@@ -39,7 +45,13 @@ pub use avx::{BackendAVX, BackendAVXU8};
 pub use avx512::{BackendAVX512, BackendAVX512U8};
 #[cfg(target_arch = "aarch64")]
 pub use neon::{BackendNEON, BackendNEONU8};
-#[cfg(any(test, not(all(target_arch = "wasm32", target_feature = "simd128"))))]
+#[cfg(any(
+    test,
+    not(any(
+        all(target_arch = "wasm32", target_feature = "simd128"),
+        target_arch = "aarch64"
+    ))
+))]
 pub use scalar::{BackendScalar8, BackendScalar16U8};
 #[cfg(target_arch = "x86_64")]
 pub use sse::{BackendSSE, BackendSSEU8};

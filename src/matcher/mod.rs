@@ -5,7 +5,10 @@ use alloc::{vec, vec::Vec};
 
 #[cfg(target_arch = "aarch64")]
 use crate::literal::LiteralNEON;
-#[cfg(not(all(target_arch = "wasm32", target_feature = "simd128")))]
+#[cfg(not(any(
+    all(target_arch = "wasm32", target_feature = "simd128"),
+    target_arch = "aarch64"
+)))]
 use crate::literal::LiteralScalar;
 #[cfg(all(target_arch = "wasm32", target_feature = "simd128"))]
 use crate::literal::LiteralWasm;
@@ -47,9 +50,15 @@ macro_rules! dispatch {
             MatcherBackend::WasmU8($m) => $body,
             #[cfg(all(target_arch = "wasm32", target_feature = "simd128"))]
             MatcherBackend::Wasm($m) => $body,
-            #[cfg(not(all(target_arch = "wasm32", target_feature = "simd128")))]
+            #[cfg(not(any(
+                all(target_arch = "wasm32", target_feature = "simd128"),
+                target_arch = "aarch64"
+            )))]
             MatcherBackend::ScalarU8($m) => $body,
-            #[cfg(not(all(target_arch = "wasm32", target_feature = "simd128")))]
+            #[cfg(not(any(
+                all(target_arch = "wasm32", target_feature = "simd128"),
+                target_arch = "aarch64"
+            )))]
             MatcherBackend::Scalar($m) => $body,
             #[cfg(target_arch = "x86_64")]
             MatcherBackend::LiteralAVX512($m) => $body,
@@ -61,7 +70,10 @@ macro_rules! dispatch {
             MatcherBackend::LiteralNEON($m) => $body,
             #[cfg(all(target_arch = "wasm32", target_feature = "simd128"))]
             MatcherBackend::LiteralWasm($m) => $body,
-            #[cfg(not(all(target_arch = "wasm32", target_feature = "simd128")))]
+            #[cfg(not(any(
+                all(target_arch = "wasm32", target_feature = "simd128"),
+                target_arch = "aarch64"
+            )))]
             MatcherBackend::LiteralScalar($m) => $body,
         }
     };
@@ -530,6 +542,7 @@ impl Matcher {
             } else if MatcherNEON::is_available() {
                 return MatcherBackend::NEON(unsafe { MatcherNEON::build(needle, config) });
             }
+            unreachable!("neon is statically enabled")
         }
 
         #[cfg(all(target_arch = "wasm32", target_feature = "simd128"))]
@@ -543,7 +556,10 @@ impl Matcher {
             unreachable!("simd128 is statically enabled")
         }
 
-        #[cfg(not(all(target_arch = "wasm32", target_feature = "simd128")))]
+        #[cfg(not(any(
+            all(target_arch = "wasm32", target_feature = "simd128"),
+            target_arch = "aarch64"
+        )))]
         {
             if use_u8 {
                 MatcherBackend::ScalarU8(unsafe { MatcherScalarU8::build(needle, config) })
@@ -574,6 +590,7 @@ impl Matcher {
             if LiteralNEON::is_available() {
                 return MatcherBackend::LiteralNEON(unsafe { LiteralNEON::build(needle, config) });
             }
+            unreachable!("neon is statically enabled")
         }
 
         #[cfg(all(target_arch = "wasm32", target_feature = "simd128"))]
@@ -584,7 +601,10 @@ impl Matcher {
             unreachable!("simd128 is statically enabled")
         }
 
-        #[cfg(not(all(target_arch = "wasm32", target_feature = "simd128")))]
+        #[cfg(not(any(
+            all(target_arch = "wasm32", target_feature = "simd128"),
+            target_arch = "aarch64"
+        )))]
         {
             MatcherBackend::LiteralScalar(unsafe { LiteralScalar::build(needle, config) })
         }
@@ -882,7 +902,10 @@ mod tests {
             MatcherBackend::NEONU8(_) => true,
             #[cfg(all(target_arch = "wasm32", target_feature = "simd128"))]
             MatcherBackend::WasmU8(_) => true,
-            #[cfg(not(all(target_arch = "wasm32", target_feature = "simd128")))]
+            #[cfg(not(any(
+                all(target_arch = "wasm32", target_feature = "simd128"),
+                target_arch = "aarch64"
+            )))]
             MatcherBackend::ScalarU8(_) => true,
             _ => false,
         };
@@ -902,7 +925,10 @@ mod tests {
             MatcherBackend::NEON(_) => true,
             #[cfg(all(target_arch = "wasm32", target_feature = "simd128"))]
             MatcherBackend::Wasm(_) => true,
-            #[cfg(not(all(target_arch = "wasm32", target_feature = "simd128")))]
+            #[cfg(not(any(
+                all(target_arch = "wasm32", target_feature = "simd128"),
+                target_arch = "aarch64"
+            )))]
             MatcherBackend::Scalar(_) => true,
             _ => false,
         };
