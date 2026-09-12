@@ -53,6 +53,7 @@ str_enum!(parse_sort, sort_to_str, SortStrategy, "sort", {
     "score_then_index_desc" => SortStrategy::ScoreThenIndexDesc,
     "index_asc" => SortStrategy::IndexAsc,
     "index_desc" => SortStrategy::IndexDesc,
+    "unsorted" => SortStrategy::Unsorted,
 });
 
 /// Controls the scoring used by the smith waterman algorithm.

@@ -107,6 +107,10 @@ typedef enum frizbee_sort_strategy_t {
    * Sort by descending haystack index, reversing input order
    */
   FRIZBEE_SORT_INDEX_DESC,
+  /**
+   * No ordering guarantee (cheapest); for callers that re-sort themselves
+   */
+  FRIZBEE_SORT_UNSORTED,
 } frizbee_sort_strategy_t;
 
 /**

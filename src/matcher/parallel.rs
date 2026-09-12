@@ -90,7 +90,7 @@ impl Matcher {
                 })
                 .collect();
 
-            let matches = handles.into_iter().map(|h| h.join().unwrap()).collect();
+            let matches: Vec<Vec<Match>> = handles.into_iter().map(|h| h.join().unwrap()).collect();
             match matcher.config.sort {
                 SortStrategy::ScoreThenIndexAsc => k_merge_matches_by_score_then_index_asc(matches),
                 SortStrategy::ScoreThenIndexDesc => {
@@ -98,6 +98,7 @@ impl Matcher {
                 }
                 SortStrategy::IndexAsc => k_merge_matches_by_index_asc(matches),
                 SortStrategy::IndexDesc => k_merge_matches_by_index_desc(matches),
+                SortStrategy::Unsorted => matches.into_iter().flatten().collect(),
             }
         })
     }
@@ -181,7 +182,7 @@ impl Matcher {
                 })
                 .collect();
 
-            let matches = handles.into_iter().map(|h| h.join().unwrap()).collect();
+            let matches: Vec<Vec<Match>> = handles.into_iter().map(|h| h.join().unwrap()).collect();
             match matcher.config.sort {
                 SortStrategy::ScoreThenIndexAsc => k_merge_matches_by_score_then_index_asc(matches),
                 SortStrategy::ScoreThenIndexDesc => {
@@ -189,6 +190,7 @@ impl Matcher {
                 }
                 SortStrategy::IndexAsc => k_merge_matches_by_index_asc(matches),
                 SortStrategy::IndexDesc => k_merge_matches_by_index_desc(matches),
+                SortStrategy::Unsorted => matches.into_iter().flatten().collect(),
             }
         })
     }
@@ -265,15 +267,24 @@ mod tests {
         }
 
         for query in ["abc !xyz", "abc a", "!abc !xyz"] {
-            for sort in [SortStrategy::ScoreThenIndexAsc, SortStrategy::IndexAsc] {
+            for sort in [
+                SortStrategy::ScoreThenIndexAsc,
+                SortStrategy::IndexAsc,
+                SortStrategy::Unsorted,
+            ] {
                 let config = Config::default().sort(sort);
                 let mut matcher = Matcher::from_patterns(&Pattern::parse_query(query), &config);
                 let sequential = matcher.match_list(&haystacks);
 
                 for &threads in thread_counts() {
-                    let parallel = matcher.match_list_parallel(&haystacks, threads);
+                    let mut parallel = matcher.match_list_parallel(&haystacks, threads);
+                    let mut expected = sequential.clone();
+                    if sort == SortStrategy::Unsorted {
+                        parallel.sort_by_key(|m| m.index);
+                        expected.sort_by_key(|m| m.index);
+                    }
                     assert_eq!(
-                        &parallel, &sequential,
+                        &parallel, &expected,
                         "query={query:?}, sort={sort:?}, threads={threads}"
                     );
                 }
@@ -308,6 +319,7 @@ mod tests {
                 SortStrategy::ScoreThenIndexDesc,
                 SortStrategy::IndexAsc,
                 SortStrategy::IndexDesc,
+                SortStrategy::Unsorted,
             ] {
                 let config = Config::default().sort(sort);
                 let mut matcher = Matcher::from_patterns(&Pattern::parse_query(query), &config);
@@ -315,13 +327,18 @@ mod tests {
                 assert!(!sequential.is_empty());
 
                 for &threads in thread_counts() {
-                    let parallel = matcher.match_list_parallel_resolved(
+                    let mut parallel = matcher.match_list_parallel_resolved(
                         &chunk_data,
                         &resolve_chunks::<2>,
                         threads,
                     );
+                    let mut expected = sequential.clone();
+                    if sort == SortStrategy::Unsorted {
+                        parallel.sort_by_key(|m| m.index);
+                        expected.sort_by_key(|m| m.index);
+                    }
                     assert_eq!(
-                        &parallel, &sequential,
+                        &parallel, &expected,
                         "query={query:?}, sort={sort:?}, threads={threads}"
                     );
                 }

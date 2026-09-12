@@ -77,6 +77,8 @@ pub enum frizbee_sort_strategy_t {
     FRIZBEE_SORT_INDEX_ASC,
     /// Sort by descending haystack index, reversing input order
     FRIZBEE_SORT_INDEX_DESC,
+    /// No ordering guarantee (cheapest); for callers that re-sort themselves
+    FRIZBEE_SORT_UNSORTED,
 }
 
 /// Controls the scoring used by the smith waterman algorithm. Pay close
@@ -194,6 +196,7 @@ convert_enum!(frizbee_sort_strategy_t => SortStrategy, sort_strategy_to_core, so
     FRIZBEE_SORT_SCORE_THEN_INDEX_DESC => ScoreThenIndexDesc,
     FRIZBEE_SORT_INDEX_ASC => IndexAsc,
     FRIZBEE_SORT_INDEX_DESC => IndexDesc,
+    FRIZBEE_SORT_UNSORTED => Unsorted,
 });
 
 fn scoring_to_core(scoring: &frizbee_scoring_t) -> Scoring {

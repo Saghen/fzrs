@@ -367,6 +367,11 @@ pub enum SortStrategy {
     IndexAsc,
     /// Sort by descending haystack index, reversing input order
     IndexDesc,
+    /// No ordering guarantee: the cheapest strategy, for callers that re-sort
+    /// the matches themselves. Sequential matching yields input order;
+    /// parallel matching yields the per-thread runs concatenated instead of
+    /// merged.
+    Unsorted,
 }
 
 impl SortStrategy {
@@ -376,6 +381,7 @@ impl SortStrategy {
             SortStrategy::IndexAsc => SortStrategy::IndexDesc,
             SortStrategy::ScoreThenIndexDesc => SortStrategy::ScoreThenIndexAsc,
             SortStrategy::IndexDesc => SortStrategy::IndexAsc,
+            SortStrategy::Unsorted => SortStrategy::Unsorted,
         }
     }
 

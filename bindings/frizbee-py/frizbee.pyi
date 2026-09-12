@@ -9,7 +9,7 @@ Casing = Literal["ignore", "smart", "respect"]
 Unicode = Literal["ignore", "smart", "always"]
 Matching = Literal["fuzzy", "exact", "prefix", "suffix", "substring"]
 Sort = Literal[
-    "score_then_index_asc", "score_then_index_desc", "index_asc", "index_desc"
+    "score_then_index_asc", "score_then_index_desc", "index_asc", "index_desc", "unsorted"
 ]
 
 @final

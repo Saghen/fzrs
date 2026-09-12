@@ -207,6 +207,7 @@ mirror_enum!(SortStrategy {
     ScoreThenIndexDesc = "scoreThenIndexDesc",
     IndexAsc = "indexAsc",
     IndexDesc = "indexDesc",
+    Unsorted = "unsorted",
 });
 
 /// Mirror of [`frizbee::Scoring`] with all-optional camelCase fields; missing
